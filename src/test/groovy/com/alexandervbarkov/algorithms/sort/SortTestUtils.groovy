@@ -13,18 +13,14 @@ class SortTestUtils {
             int maxArraySize = MAX_ARRAY_SIZE
     ) {
         for (int i = 1; i < maxArraySize; ++i) {
-            def unsorted = generateArray(i, maxArrayElementValue)
-            def sorted = Arrays.copyOf(unsorted, unsorted.length)
+            def a = generateArray(i, maxArrayElementValue)
+            printArray("unsorted: ", a)
             try {
-                sort.accept(sorted)
-                printArrays(unsorted, sorted)
+                sort.accept(a)
+            } finally {
+                printArray("sorted:   ", a)
             }
-            catch (Throwable e) {
-                printArrays(unsorted, sorted)
-                throw e
-            }
-            if (!isInOrder(sorted)) {
-                printArrays(unsorted, sorted)
+            if (!isInOrder(a)) {
                 throw new AssertionError()
             }
         }
@@ -49,12 +45,7 @@ class SortTestUtils {
         true
     }
 
-    private static void printArrays(int[] unsorted, int[] sorted) {
-        printArray 'Unsorted: ', unsorted
-        printArray 'Sorted:   ', sorted
-    }
-
-    private static void printArray(String label = '', int[] a) {
+    static void printArray(String label = '', int[] a) {
         println label + Arrays.toString(a)
     }
 }
